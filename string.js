@@ -24,6 +24,6 @@ function size(x){
     console.log(word.match(/ain/g))
     console.log(word.includes("SPAIN"))
     console.log(name.startsWith("SREE", 8))
-   console.log(`Welcome ${name}!`)
+     console.log(`Welcome ${name}!`)
 }
 size("Praveen Sree");
