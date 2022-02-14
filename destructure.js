@@ -17,37 +17,37 @@ const { department: { address: { city } } } = user;
 console.log(city)
 
 
-const colours = ['RED', 'YELLOW','GREEN'];
+const colours = ['RED', 'YELLOW', 'GREEN'];
 
 const [R, G, B] = colours;
 console.log(R);
 console.log(G);
-console.log(B); 
+console.log(B);
 
 const [a, ...b] = [1, 2, 3];
-console.log(a); 
+console.log(a);
 console.log(b);
 
-function iteration(){
+function iteration() {
     const users = [
-        { 
-            'name': 'Alex',
+        {
+            'name': 'Sree',
             'address': '15th Park Avenue',
             'age': 43
         },
-        { 
+        {
             'name': 'Bob',
             'address': 'Canada',
             'age': 53
         },
-        { 
+        {
             'name': 'Carl',
             'address': 'Bangalore',
             'age': 26
         }
     ];
 
-    for(let { name, age } of users) {
+    for (let { name, age } of users) {
         console.log(`${name} is ${age} years old!`);
     }
 }
