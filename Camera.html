@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Camera</title>
+  <style>
+    body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Adjust height as needed */
+}
+    #webcam {
+      width: 640px; /* Adjust width as needed */
+      height: 480px; /* Adjust height as needed */
+      border: 1px solid #ccc;
+    }
+
+    #captureButton {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #canvas {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Camera</h1>
+  <video id="webcam" autoplay></video>
+  <button id="captureButton">Capture Image</button>
+  <canvas id="canvas"></canvas>
+</body>
+<script>
+  const video = document.getElementById('webcam');
+  const captureButton = document.getElementById('captureButton');
+  const canvas = document.getElementById('canvas');
+
+  function startCamera(stream) {
+    video.srcObject = stream;
+  }
+
+  function checkPermission() {
+    const permission = localStorage.getItem('cameraPermission');
+
+    if (permission) {
+      // Permission already granted, start camera
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(startCamera)
+        .catch(error => {
+          // Handle permission denied error
+          console.error('Permission denied:', error);
+          localStorage.removeItem('cameraPermission');
+        });
+    } else {
+      // Request permission
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(stream => {
+          // Permission granted, store it and start camera
+          localStorage.setItem('cameraPermission', 'granted');
+          startCamera(stream);
+        })
+        .catch(error => {
+          // Handle permission denied error
+          console.error('Permission denied:', error);
+        });
+    }
+  }
+
+  // Call checkPermission() on page load
+  document.addEventListener('DOMContentLoaded', checkPermission);
+
+  captureButton.addEventListener('click', () => {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const dataURL = canvas.toDataURL('image/png');
+
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = 'captured_image.png';
+    link.click();
+  });
+</script>
+</html>
