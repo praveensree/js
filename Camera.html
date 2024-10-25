@@ -79,7 +79,16 @@
   captureButton.addEventListener('click', () => {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    const ctx = canvas.getContext('2d');
+
+    // Flip the canvas horizontally
+    ctx.save();  // Save the current state
+    ctx.scale(-1, 1);  // Flip horizontally
+
+    // Move the canvas back to its correct position
+    ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+
+    ctx.restore();  // Restore the state so it doesn't affect other drawings
 
     const dataURL = canvas.toDataURL('image/png');
 
@@ -87,6 +96,7 @@
     link.href = dataURL;
     link.download = 'captured_image.png';
     link.click();
-  });
+});
+
 </script>
 </html>
